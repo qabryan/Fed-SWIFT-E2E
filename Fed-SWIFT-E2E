@@ -1,0 +1,134 @@
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class WireTransferTest {
+
+    public static void main(String[] args) {
+        // Set up the web driver and navigate to the wire transfer page
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://wiretransferpage.com");
+
+        // Fill in the wire transfer details
+        WebElement transferAmountField = driver.findElement(By.id("transfer-amount"));
+        transferAmountField.sendKeys("1000");
+
+        WebElement senderAccountField = driver.findElement(By.id("sender-account"));
+        senderAccountField.sendKeys("123456789");
+
+        WebElement recipientAccountField = driver.findElement(By.id("recipient-account"));
+        recipientAccountField.sendKeys("987654321");
+
+        // Use Rest-Assured library to verify the input data
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+
+        String transferAmount = transferAmountField.getAttribute("value");
+        String senderAccount = senderAccountField.getAttribute("value");
+        String recipientAccount = recipientAccountField.getAttribute("value");
+
+        String requestBody = "{"
+                + "\"transferAmount\": \"" + transferAmount + "\","
+                + "\"senderAccount\": \"" + senderAccount + "\","
+                + "\"recipientAccount\": \"" + recipientAccount + "\""
+                + "}";
+
+        Response response = request.post("http://api.wiretransfer.com/validateTransferData", requestBody);
+
+        // Verify the response status code and message
+        int statusCode = response.getStatusCode();
+        String responseMessage = response.getBody().asString();
+
+        if (statusCode == 200 && responseMessage.equals("Transfer data is valid")) {
+            System.out.println("Input data for wire transfer is accurate");
+        } else {
+            System.out.println("Input data for wire transfer is inaccurate");
+        }
+
+        // Close the web driver
+        driver.quit();
+    }
+}
+
+
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class WireTransferTest {
+
+    public static void main(String[] args) {
+        // Set up the web driver and navigate to the wire transfer page
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://wiretransferpage.com");
+
+        // Fill in the wire transfer details
+        WebElement transferAmountField = driver.findElement(By.id("transfer-amount"));
+        transferAmountField.sendKeys("1000");
+
+        WebElement senderAccountField = driver.findElement(By.id("sender-account"));
+        senderAccountField.sendKeys("123456789");
+
+        WebElement recipientAccountField = driver.findElement(By.id("recipient-account"));
+        recipientAccountField.sendKeys("987654321");
+
+        // Fill in the necessary approvals and authorizations
+        WebElement approval1Field = driver.findElement(By.id("approval-1"));
+        approval1Field.sendKeys("John Doe");
+
+        WebElement approval2Field = driver.findElement(By.id("approval-2"));
+        approval2Field.sendKeys("Jane Smith");
+
+        WebElement authorizationField = driver.findElement(By.id("authorization"));
+        authorizationField.sendKeys("Authorized");
+
+        // Use Rest-Assured library to verify the approvals and authorizations
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+
+        String transferAmount = transferAmountField.getAttribute("value");
+        String senderAccount = senderAccountField.getAttribute("value");
+        String recipientAccount = recipientAccountField.getAttribute("value");
+        String approval1 = approval1Field.getAttribute("value");
+        String approval2 = approval2Field.getAttribute("value");
+        String authorization = authorizationField.getAttribute("value");
+
+        String requestBody = "{"
+                + "\"transferAmount\": \"" + transferAmount + "\","
+                + "\"senderAccount\": \"" + senderAccount + "\","
+                + "\"recipientAccount\": \"" + recipientAccount + "\","
+                + "\"approvals\": [\"" + approval1 + "\", \"" + approval2 + "\"],"
+                + "\"authorization\": \"" + authorization + "\""
+                + "}";
+
+        Response response = request.post("http://api.wiretransfer.com/validateApprovalsAndAuthorization", requestBody);
+
+        // Verify the response status code and message
+        int statusCode = response.getStatusCode();
+        String responseMessage = response.getBody().asString();
+
+        if (statusCode == 200 && responseMessage.equals("Approvals and authorizations are valid")) {
+            System.out.println("All necessary approvals are obtained and authorizations are valid");
+        } else {
+            System.out.println("Approvals or authorizations are missing or invalid");
+        }
+
+        // Close the web driver
+        driver.quit();
+    }
+}
+
+
+
+
